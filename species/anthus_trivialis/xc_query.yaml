@@ -1,0 +1,9 @@
+genus: Anthus
+species: trivialis
+keywords:
+- call
+- flight
+exclude:
+- song
+min_quality: B
+max_duration: 10
