@@ -1,0 +1,87 @@
+# =========================
+# Python / Virtual Env
+# =========================
+.venv/
+venv/
+ENV/
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+pip-wheel-metadata/
+
+# =========================
+# IDE / Editors
+# =========================
+.idea/
+.vscode/
+*.iml
+
+# =========================
+# OS specific
+# =========================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# =========================
+# Logs & temp files
+# =========================
+*.log
+*.tmp
+
+# =========================
+# Audio & dataset (NOOIT pushen)
+# =========================
+*.wav
+*.mp3
+*.flac
+*.ogg
+
+species/**/raw/
+species/**/chunks/
+species/**/temp/
+
+# =========================
+# Model / training artefacts
+# =========================
+*.h5
+*.pt
+*.pth
+*.onnx
+*.ckpt
+models/
+checkpoints/
+
+# =========================
+# FFmpeg / external tools
+# =========================
+ffmpeg/
+ffmpeg.exe
+
+# =========================
+# Secrets / config overrides
+# =========================
+.env
+*.key
+*.secret
+
+# =========================
+# Python build / cache
+# =========================
+build/
+dist/
+.eggs/
+
+# =========================
+# Jupyter
+# =========================
+.ipynb_checkpoints/
+
+# =========================
+# Git safety
+# =========================
+*.orig
+*.rej

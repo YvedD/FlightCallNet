@@ -1,9 +1,0 @@
-scientific_name: Anthus trivialis
-common_name: Tree Pipit
-call_types:
-- flight_call
-- contact_call
-region:
-- Western Europe
-confidence_target: species
-notes: "Slightly lower, softer call than Meadow Pipit"
