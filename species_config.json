@@ -1,0 +1,29 @@
+[
+    {
+        "name": "Anthus pratensis",
+        "type": "flight",
+        "quality": "A",
+        "max_per_species": 50,
+        "chunk_min_ms": 150,
+        "chunk_max_ms": 1000,
+        "silence_thresh": -40
+    },
+    {
+        "name": "Anthus trivialis",
+        "type": "flight",
+        "quality": "A",
+        "max_per_species": 50,
+        "chunk_min_ms": 150,
+        "chunk_max_ms": 1000,
+        "silence_thresh": -40
+    },
+    {
+        "name": "Merops apiaster",
+        "type": "flight",
+        "quality": "A",
+        "max_per_species": 50,
+        "chunk_min_ms": 150,
+        "chunk_max_ms": 1000,
+        "silence_thresh": -40
+    }
+]
