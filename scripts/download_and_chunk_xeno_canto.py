@@ -89,14 +89,14 @@ def convert_to_wav(src_path, dst_path):
     audio.export(dst_path, format="wav")
     print(f"Converted {src_path} → {dst_path}")
 
-def chunk_audio(wav_path, events_path, min_ms=150, max_ms=1000, silence_thresh=-40, min_silence_len=500, keep_silence=200):
+def chunk_audio(wav_path, events_path, min_ms=150, max_ms=1000, silence_thresh=-50, min_silence_len=500, keep_silence=200):
     """
     Chunk audio by splitting on silence periods.
     
     Parameters:
     - min_ms: Minimum chunk duration in milliseconds (default: 150)
     - max_ms: Maximum chunk duration in milliseconds (default: 1000)
-    - silence_thresh: Silence threshold in dBFS (default: -40). Lower = less sensitive
+    - silence_thresh: Silence threshold in dBFS (default: -50). Lower = less sensitive
     - min_silence_len: Minimum silence duration to split on, in ms (default: 500)
                        Increased from 100ms to avoid splitting on brief natural pauses
     - keep_silence: Amount of silence to keep at start/end of chunks, in ms (default: 200)
