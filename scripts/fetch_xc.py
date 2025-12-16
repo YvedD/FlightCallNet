@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
 """
+Xeno-Canto API v3 ONLY
+See: https://xeno-canto.org/explore/api
+Do NOT use API v2 syntax.
+"""
+
+"""
 FlightCallNet – Xeno-canto fetch script (v0.1)
 
 This script downloads recordings from Xeno-canto based on a species

@@ -1,3 +1,10 @@
+"""
+Xeno-Canto API v3 ONLY
+See: https://xeno-canto.org/explore/api
+Do NOT use API v2 syntax.
+"""
+
+
 import os
 import json
 import requests

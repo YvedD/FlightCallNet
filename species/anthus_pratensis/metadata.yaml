@@ -1,9 +1,0 @@
-scientific_name: Anthus pratensis
-common_name: Meadow Pipit
-call_types:
-- flight_call
-- contact_call
-region:
-- Western Europe
-confidence_target: species
-notes: "Thin, sharp flight call, day and night"
