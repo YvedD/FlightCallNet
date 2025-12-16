@@ -10,6 +10,29 @@ CONFIG_FILE = "species_config.json"  # JSON-bestand met soorten en instellingen
 RAW_DIR = "raw"
 EVENTS_DIR = "events"
 
+# ---------------- CHUNKING PARAMETERS GUIDE ----------------
+# The chunking parameters control how audio files are split into individual call events.
+# Adjust these to balance between:
+#   - Too many chunks: hundreds of tiny fragments, including noise
+#   - Too few chunks: missing individual calls or including too much silence
+#
+# Key parameters:
+#   - min_silence_len (ms): Minimum silence duration to split on
+#     * Lower values (100-200ms): Split on brief pauses, may create hundreds of chunks
+#     * Higher values (500-800ms): Only split on clear gaps, fewer chunks
+#     * Recommended: 500ms for flight calls (ignores natural pauses within call sequences)
+#
+#   - silence_thresh (dBFS): Volume level considered as "silence"
+#     * Higher values (-35 to -40 dBFS): More sensitive, treats quiet sounds as silence
+#     * Lower values (-50 to -55 dBFS): Less sensitive, only true silence triggers split
+#     * Recommended: -50 dBFS (avoids splitting during quiet parts of calls)
+#
+#   - keep_silence (ms): Amount of silence to preserve around chunks
+#     * 0ms: Cut chunks exactly at silence boundaries
+#     * 100-300ms: Keep context around calls for better classification
+#     * Recommended: 200ms (preserves attack/decay characteristics)
+#
+
 # ---------------- HELPERS ----------------
 def ensure_dirs(base_path):
     raw_path = os.path.join(base_path, RAW_DIR)
@@ -66,13 +89,28 @@ def convert_to_wav(src_path, dst_path):
     audio.export(dst_path, format="wav")
     print(f"Converted {src_path} → {dst_path}")
 
-def chunk_audio(wav_path, events_path, min_ms=150, max_ms=1000, silence_thresh=-40):
+def chunk_audio(wav_path, events_path, min_ms=150, max_ms=1000, silence_thresh=-40, min_silence_len=500, keep_silence=200):
+    """
+    Chunk audio by splitting on silence periods.
+    
+    Parameters:
+    - min_ms: Minimum chunk duration in milliseconds (default: 150)
+    - max_ms: Maximum chunk duration in milliseconds (default: 1000)
+    - silence_thresh: Silence threshold in dBFS (default: -40). Lower = less sensitive
+    - min_silence_len: Minimum silence duration to split on, in ms (default: 500)
+                       Increased from 100ms to avoid splitting on brief natural pauses
+    - keep_silence: Amount of silence to keep at start/end of chunks, in ms (default: 200)
+                    Preserves context around calls for better classification
+    """
     audio = AudioSegment.from_wav(wav_path)
     chunks = split_on_silence(
         audio,
-        min_silence_len=100,
-        silence_thresh=silence_thresh
+        min_silence_len=min_silence_len,
+        silence_thresh=silence_thresh,
+        keep_silence=keep_silence
     )
+    
+    exported_count = 0
     for i, chunk in enumerate(chunks):
         if len(chunk) < min_ms:
             continue
@@ -80,7 +118,9 @@ def chunk_audio(wav_path, events_path, min_ms=150, max_ms=1000, silence_thresh=-
             chunk = chunk[:max_ms]
         fname = os.path.join(events_path, f"{os.path.basename(wav_path)[:-4]}_chunk{i}.wav")
         chunk.export(fname, format="wav")
-        print(f"Exported chunk: {fname}")
+        exported_count += 1
+    
+    print(f"Exported {exported_count} chunks from {os.path.basename(wav_path)}")
 
 # ---------------- MAIN ----------------
 def process_species(species_dict):
@@ -90,7 +130,9 @@ def process_species(species_dict):
     max_per_species = species_dict.get("max_per_species", 50)
     min_ms = species_dict.get("chunk_min_ms", 150)
     max_ms = species_dict.get("chunk_max_ms", 1000)
-    silence_thresh = species_dict.get("silence_thresh", -40)
+    silence_thresh = species_dict.get("silence_thresh", -50)  # Changed default from -40 to -50 (less sensitive)
+    min_silence_len = species_dict.get("min_silence_len", 500)  # Increased from 100 to 500ms
+    keep_silence = species_dict.get("keep_silence", 200)  # Keep 200ms of silence around chunks
 
     print(f"\nProcessing species: {species_name} (type={species_type}, quality={quality})")
     base_path = os.path.join("species", species_name.lower().replace(" ", "_"))
@@ -116,7 +158,7 @@ def process_species(species_dict):
         if not os.path.exists(wav_filename):
             convert_to_wav(mp3_filename, wav_filename)
 
-        chunk_audio(wav_filename, events_path, min_ms, max_ms, silence_thresh)
+        chunk_audio(wav_filename, events_path, min_ms, max_ms, silence_thresh, min_silence_len, keep_silence)
 
 def main():
     if not os.path.exists(CONFIG_FILE):

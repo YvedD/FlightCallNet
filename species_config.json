@@ -6,7 +6,9 @@
         "max_per_species": 50,
         "chunk_min_ms": 150,
         "chunk_max_ms": 1000,
-        "silence_thresh": -40
+        "silence_thresh": -50,
+        "min_silence_len": 500,
+        "keep_silence": 200
     },
     {
         "name": "Anthus trivialis",
@@ -15,7 +17,9 @@
         "max_per_species": 50,
         "chunk_min_ms": 150,
         "chunk_max_ms": 1000,
-        "silence_thresh": -40
+        "silence_thresh": -50,
+        "min_silence_len": 500,
+        "keep_silence": 200
     },
     {
         "name": "Merops apiaster",
@@ -24,6 +28,8 @@
         "max_per_species": 50,
         "chunk_min_ms": 150,
         "chunk_max_ms": 1000,
-        "silence_thresh": -40
+        "silence_thresh": -50,
+        "min_silence_len": 500,
+        "keep_silence": 200
     }
 ]
