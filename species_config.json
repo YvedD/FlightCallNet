@@ -31,5 +31,16 @@
         "silence_thresh": -50,
         "min_silence_len": 500,
         "keep_silence": 200
+    },
+    {
+        "name": "Merops apiaster",
+        "type": "call",
+        "quality": "A",
+        "max_per_species": 10,
+        "chunk_min_ms": 150,
+        "chunk_max_ms": 1000,
+        "silence_thresh": -50,
+        "min_silence_len": 500,
+        "keep_silence": 200
     }
 ]
